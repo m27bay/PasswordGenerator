@@ -3,6 +3,10 @@
 
 #include <string>
 
+#include <random>
+#include <chrono> // Pour chrono::system_clock
+#include <functional> // Pour bind
+
 #include "PasswordGenerator.hpp"
 
 std::string specialChar = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
@@ -22,8 +26,15 @@ PasswordGenerator::PasswordGenerator(int sizeMini, int sizeMaxi, std::string new
 }
 
 /* Functions */
-int PasswordGenerator::intAlea(int max, int min) {
+int PasswordGenerator::intAlea(int min, int max) {
   return rand()%(max-min) + min;
+}
+
+int PasswordGenerator::intAlea2(int min, int max) {
+  std::default_random_engine re(std::chrono::system_clock::now().time_since_epoch().count());
+  std::uniform_int_distribution<int> distrib(min, max);
+  auto rd = bind(distrib, re);
+  return rd();
 }
 
 char PasswordGenerator::lowerCharAlea() {
@@ -39,31 +50,57 @@ char PasswordGenerator::specialCharAlea() {
 }
 
 void PasswordGenerator::passwordGenerate() {
-  int sizePassword = sizeMin + intAlea(sizeMax, sizeMin);
+  int sizePassword = sizeMin + intAlea(sizeMin, sizeMax);
+  bool haveInteger = false, haveSpecialChar = false, haveUpperChar = false;
   for(size_t i=0; i<sizePassword; i++) {
-    int alea = intAlea(1, 10);
-    if(alea < 7) {
+    int alea = intAlea(1, 20);
+    if(7 < alea && alea <= 17) {
       password += lowerCharAlea();
     } 
-    else if(alea < 2) {
+    else if(0 < alea && alea <= 4) {
       password += std::to_string(intAlea(1, 9));
+      haveInteger = true;
     }
-    else if(alea < 2) {
+    else if(4 < alea && alea <= 7) {
       password += specialCharAlea();
+      haveSpecialChar = true;
     }
-    else if(alea < 4) {
+    else if(alea > 17) {
       password += upperCharAlea();
+      haveUpperChar = true;
     }
+  }
+
+  if(!haveInteger) {
+    password += std::to_string(intAlea(1, 9));
+    haveInteger = true;
+    sizePassword++;
+  }
+  if(!haveSpecialChar) {
+    password += specialCharAlea();
+    haveSpecialChar = true;
+    sizePassword++;
+  }
+  if(!haveUpperChar) {
+    password += upperCharAlea();
+    haveUpperChar = false;
+    sizePassword++;
   }
 }
 
-void PasswordGenerator::write(std::string fileName) {
-  // Empty
+void PasswordGenerator::save(std::string fileName) {
+  std::ofstream flux;
+  flux.open(fileName, std::ios::out | std::ios::trunc);
+  if(flux) {
+      flux << webSite << " : " << password;
+      flux.close();
+  }
+  else {
+      std::cout << "ERROR : can't open '" << fileName << "'\n";
+  }
 }
 
 void PasswordGenerator::print() {
-  std::cout << "size min : " << sizeMin << std::endl;
-  std::cout << "size max : " << sizeMax << std::endl;
   if(password.size() == 0) {
     std::cout << webSite << " : not defined" << std::endl;
   }

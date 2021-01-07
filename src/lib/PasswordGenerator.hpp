@@ -9,15 +9,16 @@ private:
 public:
   /* Constructor */
   PasswordGenerator();
-  PasswordGenerator(int sizeMini, int sizeMaxi, std::string newWebSite);
+  PasswordGenerator(int, int, std::string);
 
   /* Functions */
-  int intAlea(int max, int min);
+  int intAlea(int, int);
+  int intAlea2(int, int);
   char lowerCharAlea();
   char upperCharAlea();
   char specialCharAlea();
   void passwordGenerate();
-  void write(std::string fileName);
+  void save(std::string);
   void print();
 
   /* Destructor */
