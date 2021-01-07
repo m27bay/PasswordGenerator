@@ -16,13 +16,13 @@ endif
 ###### COMPILATION PROJECT ######
 #################################
 
-all: build $(EXEC)
+all: build $(EXEC) run
 
 build:
 	./build.sh
 
 $(EXEC): Main.o PasswordGenerator.o
-	$(CC) target/Main.o PasswordGenerator.o -o bin/$@
+	$(CC) target/Main.o target/PasswordGenerator.o -o bin/$@
 
 #################################
 #############  RUN  #############
