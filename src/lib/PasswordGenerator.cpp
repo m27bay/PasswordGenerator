@@ -88,11 +88,23 @@ void PasswordGenerator::passwordGenerate() {
   }
 }
 
-void PasswordGenerator::save(std::string fileName) {
+void PasswordGenerator::resetFile(std::string fileName) {
   std::ofstream flux;
   flux.open(fileName, std::ios::out | std::ios::trunc);
   if(flux) {
-      flux << webSite << " : " << password;
+      flux << "\0";
+      flux.close();
+  }
+  else {
+      std::cout << "ERROR : can't open '" << fileName << "'\n";
+  }
+}
+
+void PasswordGenerator::save(std::string fileName) {
+  std::ofstream flux;
+  flux.open(fileName, std::ios::out | std::ios::app);
+  if(flux) {
+      flux << webSite << " : " << password << "\n";
       flux.close();
   }
   else {

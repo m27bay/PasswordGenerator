@@ -17,8 +17,12 @@ public:
   char lowerCharAlea();
   char upperCharAlea();
   char specialCharAlea();
+
   void passwordGenerate();
+
   void save(std::string);
+  void resetFile(std::string);
+  
   void print();
 
   /* Destructor */
