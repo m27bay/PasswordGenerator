@@ -8,6 +8,9 @@
 #include <functional> // Pour bind
 
 #include "PasswordGenerator.hpp"
+#include "Parser.hpp"
+#include "Tree.hpp"
+#include "Writer.hpp"
 
 std::string specialChar = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 

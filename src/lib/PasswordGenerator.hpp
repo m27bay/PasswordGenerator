@@ -1,3 +1,6 @@
+#ifndef PASSWORDGENERATOR_HPP
+#define PASSWORDGENERATOR_HPP
+
 class PasswordGenerator
 {
 private:
@@ -28,3 +31,5 @@ public:
   /* Destructor */
   ~PasswordGenerator();
 };
+
+#endif
