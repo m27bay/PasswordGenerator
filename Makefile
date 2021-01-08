@@ -16,7 +16,7 @@ endif
 ###### COMPILATION PROJECT ######
 #################################
 
-all: build $(EXEC)
+all: build $(EXEC) run
 
 build:
 	./build.sh
