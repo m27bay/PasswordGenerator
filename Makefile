@@ -1,6 +1,6 @@
 DEBUG=true
 CC=g++
-EXEC=main
+EXEC=passwordGenerator
 
 #################################
 ###### SETUP FLAGS COMPILE ######
@@ -16,13 +16,13 @@ endif
 ###### COMPILATION PROJECT ######
 #################################
 
-all: build $(EXEC) run
+all: build $(EXEC)
 
 build:
 	./build.sh
 
-$(EXEC): Main.o PasswordGenerator.o
-	$(CC) target/Main.o target/PasswordGenerator.o -o bin/$@
+$(EXEC): Main.o PasswordGenerator.o Tree.o Writer.o Parser.o Menu.o
+	$(CC) target/Main.o target/PasswordGenerator.o target/Tree.o target/Writer.o target/Parser.o target/Menu.o -o bin/$@
 
 #################################
 #############  RUN  #############
@@ -39,6 +39,18 @@ Main.o: src/main/Main.cpp
 	$(CC) -c $(CXXFLAGS) $< -o target/$@
 
 PasswordGenerator.o: src/lib/PasswordGenerator.cpp
+	$(CC) -c $(CXXFLAGS) $< -o target/$@
+
+Tree.o: src/lib/Tree.cpp src/lib/Tree.hpp
+	$(CC) -c $(CXXFLAGS) $< -o target/$@
+
+Writer.o: src/lib/Writer.cpp src/lib/Writer.hpp
+	$(CC) -c $(CXXFLAGS) $< -o target/$@
+
+Parser.o: src/lib/Parser.cpp src/lib/Parser.hpp
+	$(CC) -c $(CXXFLAGS) $< -o target/$@
+
+Menu.o: src/lib/Menu.cpp src/lib/Menu.hpp
 	$(CC) -c $(CXXFLAGS) $< -o target/$@
 
 #################################
@@ -65,11 +77,7 @@ cleanTarget:
 	rm target/*.o
 	rmdir target
 
-cleanOut:
-	rm out/*.o
-	rmdir out
-
-clean: cleanTarget cleanOut
+clean: cleanTarget
 
 mrproper: clean
 	rm bin/$(EXEC)
