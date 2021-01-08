@@ -124,6 +124,11 @@ void PasswordGenerator::print() {
   }
 }
 
+/* Getters */
+std::string PasswordGenerator::getPassword() {
+  return password;
+}
+
 /* Destructor */
 PasswordGenerator::~PasswordGenerator() {
   // Empty

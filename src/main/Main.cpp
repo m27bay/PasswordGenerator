@@ -7,8 +7,6 @@
 #include "../lib/PasswordGenerator.hpp"
 #include "../lib/Menu.hpp"
 
-#define OUTPUT "out/save.txt"
-
 int main(void) {
   Menu menu;
   menu.run();

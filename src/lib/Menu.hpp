@@ -7,8 +7,7 @@ class Menu
 {
 private:
   /* data */
-  std::string tmpPassword;
-  bool passwordSave = false;
+  PasswordGenerator passGen;
 
 public:
   /* Constructor */
@@ -21,7 +20,8 @@ public:
 
   void menuPassword();
   void helpPassword();
-  void create()
+  void createPassword();
+  void savePassword();
 
   /* Destructor */
   ~Menu();

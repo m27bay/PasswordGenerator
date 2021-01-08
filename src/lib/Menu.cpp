@@ -19,22 +19,28 @@ void Menu::helpPassword() {
   std::cout << "show -- show the password for a special website." << std::endl;
 }
 
-void Menu::create() {
+void Menu::createPassword() {
   int sizePasswordMin, sizePasswordMax;
   std::string webSite;
 
   std::cout << "Need some informations for create the passeword : " << std::endl;
-  std::cout << "Size min :";
+  std::cout << "Size min : ";
   std::cin >> sizePasswordMin;
-  std::cout << "Size max :";
+  std::cout << "Size max : ";
   std::cin >> sizePasswordMax;
-  std::cout << "Website :";
+  std::cout << "Website : ";
   std::cin >> webSite;
   
-  PasswordGenerator p(sizePasswordMin, sizePasswordMax, webSite);
-  p.passwordGenerate();
-  tmpPassword = p.getPassword();
-  std::cout << "Password create succesfully !" << std::endl;
+  PasswordGenerator passGen(sizePasswordMin, sizePasswordMax, webSite);
+  passGen.passwordGenerate();
+  std::cout << "Password create succesfully !\back to the password menu." << std::endl;
+}
+
+void Menu::savePassword() {
+  std::string fileName;
+  std::cout << "name of the file for save (without extension): ";
+  std::cin >> fileName;
+  passGen.save("../out/" + fileName + ".txt");
 }
 
 void Menu::menuPassword() {
@@ -45,13 +51,17 @@ void Menu::menuPassword() {
   while(1) {
     if(choice.compare("back") == 0 || choice.compare("b") == 0) {
       std::cout << "back" << std::endl;
+      std::cout << "\nFor help, type \"help\" or \"h\"\nTo quit, type \"quit\" or \"q\"\n";
       break;
     }
     else if(choice.compare("help") == 0 || choice.compare("h") == 0) {
       helpPassword();
     }
     else if(choice.compare("create") == 0 || choice.compare("c") == 0) {
-      create();
+      createPassword();
+    }
+    else if(choice.compare("save") == 0 || choice.compare("s") == 0) {
+      savePassword();
     }
     else {
       std::cout << "unknown choice" << std::endl;
