@@ -12,10 +12,16 @@ private:
 
 public:
   /* Constructor */
-  Menu(/* args */);
+  Menu();
 
   /* Functions */
   void run();
+
+  void help();
+
+  void menuPassword();
+  void helpPassword();
+  void create()
 
   /* Destructor */
   ~Menu();

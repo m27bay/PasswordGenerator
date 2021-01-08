@@ -3,26 +3,41 @@
 #include <string>
 
 #include "Menu.hpp"
+#include "PasswordGenerator.hpp"
 
 Menu::Menu() {
   // Empty
 }
 
-void help() {
+void Menu::help() {
   std::cout << "passeword -- go to the password menu." << std::endl;
 }
 
-void helpPassword() {
+void Menu::helpPassword() {
   std::cout << "create -- create a new password for a website." << std::endl;
   std::cout << "save -- encoding and save the password in a file." << std::endl;
   std::cout << "show -- show the password for a special website." << std::endl;
 }
 
-void create() {
+void Menu::create() {
+  int sizePasswordMin, sizePasswordMax;
+  std::string webSite;
+
+  std::cout << "Need some informations for create the passeword : " << std::endl;
+  std::cout << "Size min :";
+  std::cin >> sizePasswordMin;
+  std::cout << "Size max :";
+  std::cin >> sizePasswordMax;
+  std::cout << "Website :";
+  std::cin >> webSite;
   
+  PasswordGenerator p(sizePasswordMin, sizePasswordMax, webSite);
+  p.passwordGenerate();
+  tmpPassword = p.getPassword();
+  std::cout << "Password create succesfully !" << std::endl;
 }
 
-void password() {
+void Menu::menuPassword() {
   std::string choice;
 
   std::cout << "\nFor help, type \"help\" or \"h\"\nFor back to the menu, type \"back\" or \"b\"\n> ";
@@ -61,7 +76,7 @@ void Menu::run() {
       help();
     }
     else if(choice.compare("password") == 0 || choice.compare("p") == 0) {
-      password();
+      menuPassword();
     }
     else {
       std::cout << "unknown choice" << std::endl;

@@ -6,8 +6,8 @@ class PasswordGenerator
 private:
   /* data */
   int sizeMin, sizeMax;
-  std::string password;
   std::string webSite;
+  std::string password;
 
 public:
   /* Constructor */
@@ -27,6 +27,9 @@ public:
   void resetFile(std::string);
   
   void print();
+
+  /* Getter */
+  std::string getPassword();
 
   /* Destructor */
   ~PasswordGenerator();
