@@ -1,22 +1,81 @@
-#include <iostream>
-
-#include <string>
-
 #include "Menu.hpp"
-#include "PasswordGenerator.hpp"
 
 Menu::Menu() {
-  // Empty
+  tabChoices = {"quit","help","create","save","print"};
+  tabDesc = {
+    "Quit the app",
+    "Show all command",
+    "Create a new password for a website",
+    "Encoding and save the password in a file",
+    "Print the password for a special website"
+  };
+}
+
+int max(std::vector<std::string> tabString) {
+  int maxSize = INT_MIN;
+  for(std::string str : tabString) {
+    int sizeStr = (int)str.size();
+    if(sizeStr > maxSize) {
+      maxSize = sizeStr;
+    }
+  }
+
+  return maxSize;
+}
+
+int max(int a, int b) {
+  return (a > b) ? a : b;
+}
+
+void drawLine(int sizeMax, int sizeMid) {
+  std::cout << "+";
+  for(size_t i=0; i<sizeMax; i++) {
+    if(i == sizeMid-1) {
+      std::cout << "+";
+    }
+    else {
+      std::cout << "-";
+    }
+  }
+  std::cout << "+\n";
+}
+
+void drawTexte(int maxChoice, std::string choice, int maxDesc, std::string desc) {
+  //
+  std::cout << "| " << choice;
+  for(size_t i=0; i<maxChoice - (choice.size()+2); i++) {
+    std::cout << " ";
+  }
+  std::cout << "|";
+  for(size_t i=0; i<maxDesc-desc.size()-1; i++) {
+    std::cout << " ";
+  }
+  std::cout << desc << " |\n";
+}
+
+void Menu::drawFrame() {
+  std::string titleChoice = "choice";
+  std::string titleDesc = "description";
+
+  int maxChoice = max(tabChoices), maxDesc = max(tabDesc);
+  maxChoice = max(maxChoice, (int)titleChoice.size()) + 3;
+  maxDesc = max(maxDesc, (int)titleDesc.size()) + 4;
+  int sizeFrame = maxChoice+maxDesc;
+
+  //
+  drawLine(sizeFrame, maxChoice);
+  drawTexte(maxChoice, titleChoice, maxDesc, titleDesc);
+  drawLine(sizeFrame, maxChoice);
+
+  //
+  for(size_t i=0; i<tabChoices.size();i++) {
+    drawTexte(maxChoice, tabChoices[i], maxDesc, tabDesc[i]);
+  }
+  drawLine(sizeFrame, maxChoice);
 }
 
 void Menu::help() {
-  std::cout << "passeword -- go to the password menu." << std::endl;
-}
-
-void Menu::helpPassword() {
-  std::cout << "create -- create a new password for a website." << std::endl;
-  std::cout << "save -- encoding and save the password in a file." << std::endl;
-  std::cout << "show -- show the password for a special website." << std::endl;
+  drawFrame();
 }
 
 void Menu::createPassword() {
@@ -33,43 +92,14 @@ void Menu::createPassword() {
   
   PasswordGenerator passGen(sizePasswordMin, sizePasswordMax, webSite);
   passGen.passwordGenerate();
-  std::cout << "Password create succesfully !\back to the password menu." << std::endl;
+  std::cout << "Password create succesfully !\nback to the password menu." << std::endl;
 }
 
 void Menu::savePassword() {
   std::string fileName;
   std::cout << "name of the file for save (without extension): ";
   std::cin >> fileName;
-  passGen.save("../out/" + fileName + ".txt");
-}
-
-void Menu::menuPassword() {
-  std::string choice;
-
-  std::cout << "\nFor help, type \"help\" or \"h\"\nFor back to the menu, type \"back\" or \"b\"\n> ";
-  std::cin >> choice;
-  while(1) {
-    if(choice.compare("back") == 0 || choice.compare("b") == 0) {
-      std::cout << "back" << std::endl;
-      std::cout << "\nFor help, type \"help\" or \"h\"\nTo quit, type \"quit\" or \"q\"\n";
-      break;
-    }
-    else if(choice.compare("help") == 0 || choice.compare("h") == 0) {
-      helpPassword();
-    }
-    else if(choice.compare("create") == 0 || choice.compare("c") == 0) {
-      createPassword();
-    }
-    else if(choice.compare("save") == 0 || choice.compare("s") == 0) {
-      savePassword();
-    }
-    else {
-      std::cout << "unknown choice" << std::endl;
-    }
-    std::cout << "> ";
-    std::cin >> choice;
-  }
-  
+  passGen.save("out/" + fileName + ".txt");
 }
 
 void Menu::run() {
@@ -78,15 +108,26 @@ void Menu::run() {
   std::cout << "\nFor help, type \"help\" or \"h\"\nTo quit, type \"quit\" or \"q\"\n> ";
   std::cin >> choice;
   while(1) {
-    if(choice.compare("quit") == 0 || choice.compare("q") == 0) {
+    if(choice.compare(tabChoices[0]) == 0 ||
+      choice.compare(tabChoices[0].substr(0,1)) == 0)
+    {
       std::cout << "bye" << std::endl;
       break;
     }
-    else if(choice.compare("help") == 0 || choice.compare("h") == 0) {
+    else if(choice.compare(tabChoices[1]) == 0 ||
+          choice.compare(tabChoices[1].substr(0,1)) == 0)
+    {
       help();
     }
-    else if(choice.compare("password") == 0 || choice.compare("p") == 0) {
-      menuPassword();
+    else if(choice.compare(tabChoices[2]) == 0 ||
+            choice.compare(tabChoices[2].substr(0,1)) == 0)
+    {
+      createPassword();
+    }
+    else if(choice.compare(tabChoices[3]) == 0 ||
+            choice.compare(tabChoices[3].substr(0,1)) == 0)
+    {
+      savePassword();
     }
     else {
       std::cout << "unknown choice" << std::endl;

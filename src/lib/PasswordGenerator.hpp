@@ -1,6 +1,16 @@
 #ifndef PASSWORDGENERATOR_HPP
 #define PASSWORDGENERATOR_HPP
 
+#include <iostream>
+#include <fstream> // For write/read in a file
+#include <ctime>
+
+#include <climits>
+
+#include <string>
+#include <vector>
+#include <map>
+
 class PasswordGenerator
 {
 private:
@@ -23,8 +33,8 @@ public:
 
   void passwordGenerate();
 
-  void save(std::string);
-  void resetFile(std::string);
+  int save(std::string);
+  int resetFile(std::string);
   
   void print();
 

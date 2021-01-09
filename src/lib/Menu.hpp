@@ -1,13 +1,16 @@
 #ifndef MENU_HPP
 #define MENU_HPP
 
-#include <string>
+#include "PasswordGenerator.hpp"
 
 class Menu
 {
 private:
   /* data */
   PasswordGenerator passGen;
+  
+  std::vector<std::string> tabChoices;
+  std::vector<std::string> tabDesc;
 
 public:
   /* Constructor */
@@ -17,9 +20,8 @@ public:
   void run();
 
   void help();
+  void drawFrame();
 
-  void menuPassword();
-  void helpPassword();
   void createPassword();
   void savePassword();
 

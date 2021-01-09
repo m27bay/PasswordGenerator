@@ -1,12 +1,3 @@
-#include <iostream>
-#include <fstream> // For write/read in a file
-
-#include <string>
-
-#include <random>
-#include <chrono> // Pour chrono::system_clock
-#include <functional> // Pour bind
-
 #include "PasswordGenerator.hpp"
 #include "Parser.hpp"
 #include "Tree.hpp"
@@ -31,13 +22,6 @@ PasswordGenerator::PasswordGenerator(int sizeMini, int sizeMaxi, std::string new
 /* Functions */
 int PasswordGenerator::intAlea(int min, int max) {
   return rand()%(max-min) + min;
-}
-
-int PasswordGenerator::intAlea2(int min, int max) {
-  std::default_random_engine re(std::chrono::system_clock::now().time_since_epoch().count());
-  std::uniform_int_distribution<int> distrib(min, max);
-  auto rd = bind(distrib, re);
-  return rd();
 }
 
 char PasswordGenerator::lowerCharAlea() {
@@ -91,27 +75,31 @@ void PasswordGenerator::passwordGenerate() {
   }
 }
 
-void PasswordGenerator::resetFile(std::string fileName) {
+int PasswordGenerator::save(std::string fileName) {
+  std::ofstream flux;
+  flux.open(fileName, std::ios::out | std::ios::trunc);
+  if(flux) {
+      flux << webSite << " : " << password << "\n";
+      flux.close();
+      return 0;
+  }
+  else {
+      std::cout << "ERROR : can't open '" << fileName << "'\n";
+      return 1;
+  }
+}
+
+int PasswordGenerator::resetFile(std::string fileName) {
   std::ofstream flux;
   flux.open(fileName, std::ios::out | std::ios::trunc);
   if(flux) {
       flux << "\0";
       flux.close();
+      return 0;
   }
   else {
       std::cout << "ERROR : can't open '" << fileName << "'\n";
-  }
-}
-
-void PasswordGenerator::save(std::string fileName) {
-  std::ofstream flux;
-  flux.open(fileName, std::ios::out | std::ios::app);
-  if(flux) {
-      flux << webSite << " : " << password << "\n";
-      flux.close();
-  }
-  else {
-      std::cout << "ERROR : can't open '" << fileName << "'\n";
+      return 1;
   }
 }
 
