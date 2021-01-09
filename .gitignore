@@ -1,4 +1,5 @@
-out/save.txt
+out/
+bin/
 
 # Prerequisites
 *.d
