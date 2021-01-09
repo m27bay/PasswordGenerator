@@ -27,7 +27,7 @@ int max(int a, int b) {
   return (a > b) ? a : b;
 }
 
-void drawLine(int sizeMax, int sizeMid) {
+void drawDoubleLine(int sizeMax, int sizeMid) {
   std::cout << "+";
   for(size_t i=0; i<sizeMax; i++) {
     if(i == sizeMid-1) {
@@ -40,8 +40,15 @@ void drawLine(int sizeMax, int sizeMid) {
   std::cout << "+\n";
 }
 
-void drawTexte(int maxChoice, std::string choice, int maxDesc, std::string desc) {
-  //
+void drawSimpleLine(int sizeMax) {
+  std::cout << "+";
+  for(size_t i=0; i<sizeMax; i++) {
+    std::cout << "-";
+  }
+  std::cout << "+\n";
+}
+
+void drawDoubleTexte(int maxChoice, std::string choice, int maxDesc, std::string desc) {
   std::cout << "| " << choice;
   for(size_t i=0; i<maxChoice - (choice.size()+2); i++) {
     std::cout << " ";
@@ -51,6 +58,35 @@ void drawTexte(int maxChoice, std::string choice, int maxDesc, std::string desc)
     std::cout << " ";
   }
   std::cout << desc << " |\n";
+}
+
+void drawSimpleTexte(int maxText, std::string text) {
+  std::cout << "| " << text;
+  for(size_t i=0; i<maxText - (text.size()+2); i++) {
+    std::cout << " ";
+  }
+  std::cout << " |\n";
+}
+
+void drawAndAskSimpleTexte(int maxText, std::string text, int& answer) {
+  std::cout << "| " << text;
+  std::cin >> answer;
+  for(size_t i=0; i<maxText - (text.size()+3); i++) {
+    std::cout << " ";
+  }
+  std::cout << " |\n";
+}
+
+void drawAndAskSimpleTexte(int maxText, std::string text, std::string& answer) {
+  std::cout << "| " << text;
+  std::cin >> answer;
+  // while(text.size()+answer.size() > maxText) {
+    
+  // }
+  for(size_t i=0; i<maxText - (text.size()+answer.size()); i++) {
+    std::cout << " ";
+  }
+  std::cout << " |\n";
 }
 
 void Menu::drawFrame() {
@@ -63,15 +99,15 @@ void Menu::drawFrame() {
   int sizeFrame = maxChoice+maxDesc;
 
   //
-  drawLine(sizeFrame, maxChoice);
-  drawTexte(maxChoice, titleChoice, maxDesc, titleDesc);
-  drawLine(sizeFrame, maxChoice);
+  drawDoubleLine(sizeFrame, maxChoice);
+  drawDoubleTexte(maxChoice, titleChoice, maxDesc, titleDesc);
+  drawDoubleLine(sizeFrame, maxChoice);
 
   //
   for(size_t i=0; i<tabChoices.size();i++) {
-    drawTexte(maxChoice, tabChoices[i], maxDesc, tabDesc[i]);
+    drawDoubleTexte(maxChoice, tabChoices[i], maxDesc, tabDesc[i]);
   }
-  drawLine(sizeFrame, maxChoice);
+  drawDoubleLine(sizeFrame, maxChoice);
 }
 
 void Menu::help() {
@@ -82,17 +118,26 @@ void Menu::createPassword() {
   int sizePasswordMin, sizePasswordMax;
   std::string webSite;
 
-  std::cout << "Need some informations for create the passeword : " << std::endl;
-  std::cout << "Size min : ";
-  std::cin >> sizePasswordMin;
-  std::cout << "Size max : ";
-  std::cin >> sizePasswordMax;
-  std::cout << "Website : ";
-  std::cin >> webSite;
+  //
+  std::string text = "Need some informations for create the passeword";
+  size_t sizeMax = text.size();
+  drawSimpleLine((int)sizeMax);
+  std::cout << "| " << text << " |\n";
+
+  std::string text2 = "Size min : ";
+  drawAndAskSimpleTexte(sizeMax, text2, sizePasswordMin);
+
+  std::string text3 = "Size max : ";
+  drawAndAskSimpleTexte(sizeMax, text3, sizePasswordMax);
+
+  std::string text4 = "Website : ";
+  drawAndAskSimpleTexte(sizeMax ,text4, webSite);
   
   PasswordGenerator passGen(sizePasswordMin, sizePasswordMax, webSite);
   passGen.passwordGenerate();
-  std::cout << "Password create succesfully !\nback to the password menu." << std::endl;
+  std::cout << "Password create succesfully !\n";
+  std::cout << "back to the password menu.\n";
+  drawSimpleLine((int)sizeMax);
 }
 
 void Menu::savePassword() {
@@ -105,13 +150,14 @@ void Menu::savePassword() {
 void Menu::run() {
   std::string choice;
 
-  std::cout << "\nFor help, type \"help\" or \"h\"\nTo quit, type \"quit\" or \"q\"\n> ";
+  std::cout << "\nFor help, type \"help\" or \"h\"";
+  std::cout << "\nTo quit, type \"quit\" or \"q\"\n> ";
   std::cin >> choice;
   while(1) {
     if(choice.compare(tabChoices[0]) == 0 ||
       choice.compare(tabChoices[0].substr(0,1)) == 0)
     {
-      std::cout << "bye" << std::endl;
+      std::cout << "bye\n";
       break;
     }
     else if(choice.compare(tabChoices[1]) == 0 ||
@@ -130,7 +176,7 @@ void Menu::run() {
       savePassword();
     }
     else {
-      std::cout << "unknown choice" << std::endl;
+      std::cout << "unknown choice\n";
     }
     std::cout << "> ";
     std::cin >> choice;
