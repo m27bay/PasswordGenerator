@@ -28,9 +28,13 @@ int max(int a, int b) {
 }
 
 void drawDoubleLine(int sizeMax, int sizeMid) {
+  // +------+-------+
+  // | word | word2 |
+  // +------+-------+
+  // +4 with space and +1 for the | at the middle.
   std::cout << "+";
-  for(size_t i=0; i<sizeMax; i++) {
-    if(i == sizeMid-1) {
+  for(size_t i=0; i<sizeMax+5; i++) { 
+    if(i == sizeMid+2) {
       std::cout << "+";
     }
     else {
@@ -42,7 +46,7 @@ void drawDoubleLine(int sizeMax, int sizeMid) {
 
 void drawSimpleLine(int sizeMax) {
   std::cout << "+";
-  for(size_t i=0; i<sizeMax; i++) {
+  for(size_t i=0; i<sizeMax+2; i++) {
     std::cout << "-";
   }
   std::cout << "+\n";
@@ -50,11 +54,11 @@ void drawSimpleLine(int sizeMax) {
 
 void drawDoubleTexte(int maxChoice, std::string choice, int maxDesc, std::string desc) {
   std::cout << "| " << choice;
-  for(size_t i=0; i<maxChoice - (choice.size()+2); i++) {
+  for(size_t i=0; i<maxChoice-choice.size()+1; i++) {
     std::cout << " ";
   }
   std::cout << "|";
-  for(size_t i=0; i<maxDesc-desc.size()-1; i++) {
+  for(size_t i=0; i<maxDesc-desc.size()+1; i++) {
     std::cout << " ";
   }
   std::cout << desc << " |\n";
@@ -68,21 +72,9 @@ void drawSimpleTexte(int maxText, std::string text) {
   std::cout << " |\n";
 }
 
-void drawAndAskSimpleTexte(int maxText, std::string text, int& answer) {
-  std::cout << "| " << text;
-  std::cin >> answer;
-  for(size_t i=0; i<maxText - (text.size()+3); i++) {
-    std::cout << " ";
-  }
-  std::cout << " |\n";
-}
-
 void drawAndAskSimpleTexte(int maxText, std::string text, std::string& answer) {
   std::cout << "| " << text;
   std::cin >> answer;
-  // while(text.size()+answer.size() > maxText) {
-    
-  // }
   for(size_t i=0; i<maxText - (text.size()+answer.size()); i++) {
     std::cout << " ";
   }
@@ -94,8 +86,8 @@ void Menu::drawFrame() {
   std::string titleDesc = "description";
 
   int maxChoice = max(tabChoices), maxDesc = max(tabDesc);
-  maxChoice = max(maxChoice, (int)titleChoice.size()) + 3;
-  maxDesc = max(maxDesc, (int)titleDesc.size()) + 4;
+  maxChoice = max(maxChoice, (int)titleChoice.size());
+  maxDesc = max(maxDesc, (int)titleDesc.size());
   int sizeFrame = maxChoice+maxDesc;
 
   //
@@ -119,25 +111,18 @@ void Menu::createPassword() {
   std::string webSite;
 
   //
-  std::string text = "Need some informations for create the passeword";
-  size_t sizeMax = text.size();
-  drawSimpleLine((int)sizeMax);
-  std::cout << "| " << text << " |\n";
-
-  std::string text2 = "Size min : ";
-  drawAndAskSimpleTexte(sizeMax, text2, sizePasswordMin);
-
-  std::string text3 = "Size max : ";
-  drawAndAskSimpleTexte(sizeMax, text3, sizePasswordMax);
-
-  std::string text4 = "Website : ";
-  drawAndAskSimpleTexte(sizeMax ,text4, webSite);
+  std::cout << "Need some informations for create the passeword\n";
+  std::cout << "Size min : ";
+  std::cin >> sizePasswordMin;
+  std::cout <<  "Size max : ";
+  std::cin >> sizePasswordMax;
+  std::cout <<  "Website : ";
+  std::cin >> webSite;
   
   PasswordGenerator passGen(sizePasswordMin, sizePasswordMax, webSite);
   passGen.passwordGenerate();
   std::cout << "Password create succesfully !\n";
   std::cout << "back to the password menu.\n";
-  drawSimpleLine((int)sizeMax);
 }
 
 void Menu::savePassword() {
@@ -174,6 +159,11 @@ void Menu::run() {
             choice.compare(tabChoices[3].substr(0,1)) == 0)
     {
       savePassword();
+    }
+    else if(choice.compare(tabChoices[4]) == 0 ||
+            choice.compare(tabChoices[4].substr(0,1)) == 0)
+    {
+      
     }
     else {
       std::cout << "unknown choice\n";
