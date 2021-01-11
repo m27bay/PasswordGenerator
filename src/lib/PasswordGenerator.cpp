@@ -104,11 +104,16 @@ int PasswordGenerator::resetFile(std::string fileName) {
 }
 
 void PasswordGenerator::print() {
-  if(password.size() == 0) {
-    std::cout << webSite << " : not defined" << std::endl;
+  if(webSite.size() == 0) {
+    std::cout << "none website save.\n"; 
   }
   else {
-    std::cout << webSite << " : " << password << std::endl;
+    if(password.size() == 0) {
+      std::cout << webSite << " : no password\n";
+    }
+    else {
+      std::cout << webSite << " : " << password << std::endl;
+    }
   }
 }
 

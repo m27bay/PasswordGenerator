@@ -119,6 +119,7 @@ void Menu::createPassword() {
   std::cout <<  "Website : ";
   std::cin >> webSite;
   
+  //
   PasswordGenerator passGen(sizePasswordMin, sizePasswordMax, webSite);
   passGen.passwordGenerate();
   std::cout << "Password create succesfully !\n";
@@ -163,7 +164,7 @@ void Menu::run() {
     else if(choice.compare(tabChoices[4]) == 0 ||
             choice.compare(tabChoices[4].substr(0,1)) == 0)
     {
-      
+      passGen.print();
     }
     else {
       std::cout << "unknown choice\n";
