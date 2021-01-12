@@ -11,6 +11,7 @@ private:
   
   std::vector<std::string> tabChoices;
   std::vector<std::string> tabDesc;
+  std::string saveFile = "save";
 
 public:
   /* Constructor */
@@ -24,6 +25,7 @@ public:
 
   void createPassword();
   void savePassword();
+  void resetFile();
 
   /* Destructor */
   ~Menu();

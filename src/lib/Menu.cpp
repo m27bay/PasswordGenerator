@@ -1,13 +1,14 @@
 #include "Menu.hpp"
 
 Menu::Menu() {
-  tabChoices = {"quit","help","create","save","print"};
+  tabChoices = {"quit","help","create","save","print","reset"};
   tabDesc = {
     "Quit the app",
     "Show all command",
     "Create a new password for a website",
     "Encoding and save the password in a file",
-    "Print the password for a special website"
+    "Print the password for a special website",
+    "Reset the file where we save all password"
   };
 }
 
@@ -31,7 +32,7 @@ void drawDoubleLine(int sizeMax, int sizeMid) {
   // +------+-------+
   // | word | word2 |
   // +------+-------+
-  // +4 with space and +1 for the | at the middle.
+  // +4 with spaces and +1 for the '|' at the middle.
   std::cout << "+";
   for(size_t i=0; i<sizeMax+5; i++) { 
     if(i == sizeMid+2) {
@@ -120,17 +121,37 @@ void Menu::createPassword() {
   std::cin >> webSite;
   
   //
-  PasswordGenerator passGen(sizePasswordMin, sizePasswordMax, webSite);
+  PasswordGenerator pass(sizePasswordMin, sizePasswordMax, webSite);
+  passGen = pass;
   passGen.passwordGenerate();
   std::cout << "Password create succesfully !\n";
   std::cout << "back to the password menu.\n";
 }
 
 void Menu::savePassword() {
-  std::string fileName;
-  std::cout << "name of the file for save (without extension): ";
-  std::cin >> fileName;
-  passGen.save("out/" + fileName + ".txt");
+  if(passGen.getWebsite().length() == 0) {
+    std::cout << "none website.\n";
+  }
+  else {
+    int ret = passGen.save("out/" + saveFile + ".txt");
+    if(!ret) {
+      std::cout << "Password save succesfully !\n";
+    }
+  }
+  std::cout << "back to the password menu.\n";
+}
+
+void Menu::resetFile() {
+  if(saveFile.length() == 0) {
+    std::cout << "none file for save password.\n";
+  }
+  else {
+    int ret = passGen.resetFile(saveFile);
+    if(!ret) {
+      std::cout << "Password save succesfully !\n";
+    }
+  }
+  std::cout << "back to the password menu.\n";
 }
 
 void Menu::run() {
@@ -165,6 +186,11 @@ void Menu::run() {
             choice.compare(tabChoices[4].substr(0,1)) == 0)
     {
       passGen.print();
+    }
+    else if(choice.compare(tabChoices[5]) == 0 ||
+            choice.compare(tabChoices[5].substr(0,1)) == 0)
+    {
+      resetFile();
     }
     else {
       std::cout << "unknown choice\n";

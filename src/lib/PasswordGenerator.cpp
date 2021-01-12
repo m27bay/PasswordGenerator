@@ -19,9 +19,20 @@ PasswordGenerator::PasswordGenerator(int sizeMini, int sizeMaxi, std::string new
   password = "\0";
 }
 
+/* Overloaded */
+PasswordGenerator& PasswordGenerator::operator=(PasswordGenerator &other) {
+  if(this != &other) {
+    this->sizeMax = other.sizeMax;
+    this->sizeMin = other.sizeMin;
+    this->webSite = other.webSite;
+    this->password = other.password;
+  }
+}
+
 /* Functions */
 int PasswordGenerator::intAlea(int min, int max) {
-  return rand()%(max-min) + min;
+  int range = max-min+1;
+  return rand()%range + min;
 }
 
 char PasswordGenerator::lowerCharAlea() {
@@ -37,7 +48,7 @@ char PasswordGenerator::specialCharAlea() {
 }
 
 void PasswordGenerator::passwordGenerate() {
-  int sizePassword = sizeMin + intAlea(sizeMin, sizeMax);
+  int sizePassword = intAlea(sizeMin, sizeMax);
   bool haveInteger = false, haveSpecialChar = false, haveUpperChar = false;
   for(size_t i=0; i<sizePassword; i++) {
     int alea = intAlea(1, 20);
@@ -77,14 +88,14 @@ void PasswordGenerator::passwordGenerate() {
 
 int PasswordGenerator::save(std::string fileName) {
   std::ofstream flux;
-  flux.open(fileName, std::ios::out | std::ios::trunc);
+  flux.open(fileName, std::ios::out | std::ios::app);
   if(flux) {
       flux << webSite << " : " << password << "\n";
       flux.close();
       return 0;
   }
   else {
-      std::cout << "ERROR : can't open '" << fileName << "'\n";
+      std::cout << "ERROR : can't open '" << fileName << "'.\n";
       return 1;
   }
 }
@@ -98,7 +109,7 @@ int PasswordGenerator::resetFile(std::string fileName) {
       return 0;
   }
   else {
-      std::cout << "ERROR : can't open '" << fileName << "'\n";
+      std::cout << "ERROR : can't open '" << fileName << "'.\n";
       return 1;
   }
 }
@@ -109,10 +120,10 @@ void PasswordGenerator::print() {
   }
   else {
     if(password.size() == 0) {
-      std::cout << webSite << " : no password\n";
+      std::cout << webSite << " : no password.\n";
     }
     else {
-      std::cout << webSite << " : " << password << std::endl;
+      std::cout << webSite << " : " << password << " (size " << password.length() << ").\n";
     }
   }
 }
@@ -120,6 +131,10 @@ void PasswordGenerator::print() {
 /* Getters */
 std::string PasswordGenerator::getPassword() {
   return password;
+}
+
+std::string PasswordGenerator::getWebsite() {
+  return webSite;
 }
 
 /* Destructor */

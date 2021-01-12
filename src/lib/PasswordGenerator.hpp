@@ -24,6 +24,9 @@ public:
   PasswordGenerator();
   PasswordGenerator(int, int, std::string);
 
+  /* Overloaded */
+  PasswordGenerator& operator=(PasswordGenerator &other);
+
   /* Functions */
   int intAlea(int, int);
   int intAlea2(int, int);
@@ -40,6 +43,7 @@ public:
 
   /* Getter */
   std::string getPassword();
+  std::string getWebsite();
 
   /* Destructor */
   ~PasswordGenerator();
