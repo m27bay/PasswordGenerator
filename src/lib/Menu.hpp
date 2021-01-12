@@ -11,7 +11,7 @@ private:
   
   std::vector<std::string> tabChoices;
   std::vector<std::string> tabDesc;
-  std::string saveFile = "save";
+  std::string saveFile = "out/save.txt";
 
 public:
   /* Constructor */

@@ -133,7 +133,7 @@ void Menu::savePassword() {
     std::cout << "none website.\n";
   }
   else {
-    int ret = passGen.save("out/" + saveFile + ".txt");
+    int ret = passGen.save(saveFile);
     if(!ret) {
       std::cout << "Password save succesfully !\n";
     }
@@ -148,7 +148,7 @@ void Menu::resetFile() {
   else {
     int ret = passGen.resetFile(saveFile);
     if(!ret) {
-      std::cout << "Password save succesfully !\n";
+      std::cout << "File reset succesfully !\n";
     }
   }
   std::cout << "back to the password menu.\n";
