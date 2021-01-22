@@ -49,13 +49,13 @@ Menu.o: src/lib/Menu.cpp src/lib/Menu.hpp
 #################################
 
 vg:
-	valgrind .bin/$(EXEC)
+	valgrind ./bin/$(EXEC)
 
 vg2:
-	valgrind --leak-check=full --show-leak-kinds=all .bin/$(EXEC)
+	valgrind --leak-check=full --show-leak-kinds=all ./bin/$(EXEC)
 
 vg3:
-	valgrind -v .bin/$(EXEC)
+	valgrind -v ./bin/$(EXEC)
 
 gdb:
 	gdb .bin/$(EXEC)
