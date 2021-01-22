@@ -1,4 +1,5 @@
-DEBUG=true
+DEBUG=no
+#DEBUG=yes
 CC=g++
 EXEC=passwordGenerator
 
